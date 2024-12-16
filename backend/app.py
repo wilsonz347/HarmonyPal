@@ -1,7 +1,11 @@
-from transformers import GPT2LMHeadModel, GPT2Tokenizer, BertTokenizer, BertForSequenceClassification
 import torch
-from langchain.chains import SimpleSequentialChain
-from langchain.prompts import PromptTemplate
+from transformers import (
+    GPT2LMHeadModel, GPT2Tokenizer,
+    BertForSequenceClassification, BertTokenizer,
+    Trainer, TrainingArguments, DataCollatorForLanguageModeling,
+    DataCollatorWithPadding
+)
+from datasets import load_dataset
 
 # Load GPT-2
 gpt2_model = GPT2LMHeadModel.from_pretrained("gpt2")
@@ -10,6 +14,17 @@ gpt2_tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 # Load BERT for sentiment analysis
 bert_model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
 bert_tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+
+def load_data():
+    try:
+        ds = load_dataset("heliosbrahma/mental_health_chatbot_dataset")
+        return ds
+    except Exception as e:
+        print(f"Error loading dataset: {e}")
+        return None
+
+
+# Prepare data for fine-tuning
 
 
 # Sentiment Analysis (BERT)
