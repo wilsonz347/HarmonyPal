@@ -1,9 +1,10 @@
 import math
 
+from torch.optim import AdamW
 from transformers import (
     GPT2LMHeadModel, GPT2Tokenizer,
     Trainer, TrainingArguments,
-    DataCollatorForLanguageModeling, TrainerCallback,
+    DataCollatorForLanguageModeling, TrainerCallback, get_scheduler,
 )
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -45,7 +46,6 @@ def r_training_args(batch_size=8, epochs=3, warmup_ratio=0.1):
         per_device_train_batch_size=batch_size,
         per_device_eval_batch_size=batch_size,
         warmup_ratio=warmup_ratio,
-        weight_decay=0.01,
         logging_dir='./logs',
         logging_steps=1,
         evaluation_strategy="epoch",
@@ -69,11 +69,27 @@ def r_trainer(model, tokenizer, train_dataset, val_dataset, training_args):
         print(f"Batch size: {training_args.per_device_train_batch_size}")
         print("Model device:", next(model.parameters()).device)
 
+        optimizer = AdamW(
+            model.parameters(),
+            lr=2e-5,
+            betas=(0.85, 0.995),
+            eps=1e-6,
+            weight_decay=0.05
+        )
+
+        scheduler = get_scheduler(
+            name="cosine",
+            optimizer=optimizer,
+            num_warmup_steps=100,
+            num_training_steps=1000
+        )
+
         trainer = Trainer(
             model=model,
             args=training_args,
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
+            optimizers = (optimizer, scheduler),
             data_collator=DataCollatorForLanguageModeling(
                 tokenizer=tokenizer,
                 mlm=False
