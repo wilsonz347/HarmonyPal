@@ -1,5 +1,5 @@
+import torch
 import math
-
 from torch.optim import AdamW
 from transformers import (
     GPT2LMHeadModel, GPT2Tokenizer,
@@ -9,6 +9,7 @@ from transformers import (
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from torch.utils.data import Dataset
+
 
 def set_up_model_tokenizer():
     # Load pre-trained models and tokenizers
@@ -25,6 +26,7 @@ def set_up_model_tokenizer():
 
     return gpt2_model, gpt2_tokenizer
 
+
 # Preprocess the dataset
 def preprocessing_data(ds):
     try:
@@ -39,7 +41,8 @@ def preprocessing_data(ds):
         return None
     return ds
 
-def r_training_args(batch_size=8, epochs=3, warmup_ratio=0.1):
+
+def r_training_args(batch_size=8, epochs=5, warmup_ratio=0.10):
     return TrainingArguments(
         output_dir='./response_generation_results',
         num_train_epochs=epochs,
@@ -64,24 +67,31 @@ def r_training_args(batch_size=8, epochs=3, warmup_ratio=0.1):
 
 def r_trainer(model, tokenizer, train_dataset, val_dataset, training_args):
     try:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model = model.to(device)
+
         print(f"Train dataset size: {len(train_dataset)}")
         print(f"Validation dataset size: {len(val_dataset)}")
         print(f"Batch size: {training_args.per_device_train_batch_size}")
         print("Model device:", next(model.parameters()).device)
 
+        # Calculate total steps for training
+        total_steps = len(train_dataset) // training_args.per_device_train_batch_size * training_args.num_train_epochs
+        warmup_steps = int(total_steps * training_args.warmup_ratio)
+
         optimizer = AdamW(
             model.parameters(),
-            lr=2e-5,
-            betas=(0.85, 0.995),
-            eps=1e-6,
+            lr=3e-5,
+            betas=(0.90, 0.999),
+            eps=1e-8,
             weight_decay=0.05
         )
 
         scheduler = get_scheduler(
             name="cosine",
             optimizer=optimizer,
-            num_warmup_steps=100,
-            num_training_steps=1000
+            num_warmup_steps=warmup_steps,
+            num_training_steps=total_steps
         )
 
         trainer = Trainer(
