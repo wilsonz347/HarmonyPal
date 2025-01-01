@@ -4,7 +4,7 @@ from torch.optim import AdamW
 from transformers import (
     GPT2LMHeadModel, GPT2Tokenizer,
     Trainer, TrainingArguments,
-    DataCollatorForLanguageModeling, TrainerCallback, get_scheduler,
+    DataCollatorForLanguageModeling, get_scheduler,
 )
 from sklearn.model_selection import train_test_split
 import pandas as pd
@@ -105,14 +105,6 @@ def r_trainer(model, tokenizer, train_dataset, val_dataset, training_args):
                 mlm=False
             )
         )
-
-        # Add callback for progress tracking
-        class ProgressCallback(TrainerCallback):
-            def on_step_begin(self, args, state, control, **kwargs):
-                if state.global_step % 10 == 0:
-                    print(f"Step {state.global_step}: Processing...")
-
-        trainer.add_callback(ProgressCallback())
 
         # Train and save the model
         print("Starting training...")
