@@ -5,6 +5,7 @@ __pycache__/
 
 # Logs & Fine-tuned Model
 backend/logs
+backend/fine_tuned_model
 backend/fine_tuned_mental_health_model
 backend/results
 app.py
