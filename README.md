@@ -33,7 +33,7 @@ Base Model: https://huggingface.co/openai-community/gpt2
 **Important Notice:** The information provided by this chatbot is intended for general informational purposes only and should not be considered a substitute for professional medical advice, diagnosis, or treatment. 
 
 ## Limitations
-- This AI model has been trained on a limited dataset due to computational constraints.
+- Due to computational constraints, this AI model has been trained on a limited dataset with only a few epochs.
 - It may not always provide accurate or contextually appropriate responses.
 - The model's knowledge is based on its training data and does not include real-time or personal information.
 
