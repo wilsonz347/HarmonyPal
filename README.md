@@ -36,6 +36,7 @@ Base Model: https://huggingface.co/openai-community/gpt2
 - Due to computational constraints, this AI model has been trained on a limited dataset with only a few epochs.
 - It may not always provide accurate or contextually appropriate responses.
 - The model's knowledge is based on its training data and does not include real-time or personal information.
+- The conversation may be abruptly cut off due to size limitations in the AI model. 
 
 ## AI Transparency
 As a learner, I used artificial intelligence tools during the development of this project to enhance my learning and coding skills. This project served as an educational journey in understanding AI-assisted development.
