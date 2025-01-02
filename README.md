@@ -14,6 +14,7 @@ Framework: PyTorch
 
 ## Hugging Face Resources
 Dataset: https://huggingface.co/datasets/heliosbrahma/mental_health_chatbot_dataset
+
 Base Model: https://huggingface.co/openai-community/gpt2
 
 ## Key Features
