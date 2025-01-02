@@ -17,7 +17,7 @@ Dataset: https://huggingface.co/datasets/heliosbrahma/mental_health_chatbot_data
 Base Model: https://huggingface.co/openai-community/gpt2
 
 ## Key Features
-- Fine-tuned GPT-2 model on mental health related topics
+- Fine-tuned GPT-2 model on mental health-related queries
 - Chat interface with AI-generated responses
 - Flask API for handling requests and generating responses
 - React frontend for user interaction
