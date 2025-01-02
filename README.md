@@ -3,9 +3,13 @@ HarmonyPal is a web application that utilizes a fine-tuned GPT-2 model to provid
 
 ## Tech Stack
 Frontend: React, Tailwind CSS
+
 Backend: Flask
+
 Machine Learning: Hugging Face Transformers (GPT-2)
+
 Data Processing Libraries: Pandas, Scikit-learn
+
 Framework: PyTorch
 
 ## Hugging Face Resources
