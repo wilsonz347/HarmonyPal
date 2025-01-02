@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import { Send, Bot } from 'lucide-react';
 
 const App = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,6 +76,7 @@ const App = () => {
                 How are you feeling today? I'm here to listen.
               </div>
           )}
+          <div ref={messagesEndRef}/>
         </div>
 
         {/* Input Form */}
